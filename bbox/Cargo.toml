@@ -1,0 +1,18 @@
+[package]
+name = "bbox"
+version = "0.1.0"
+authors = ["Kaveh Karimi <kaveh.ka@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+helpers = { path = "../helpers" }
+meta = { path = "../meta" }
+geojson = "0.16.0"
+serde_json = "1.0.41"
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"

@@ -1,0 +1,15 @@
+[package]
+name = "utils"
+version = "0.1.0"
+authors = ["Kaveh Karimi <kaveh.ka@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+geojson = "0.16.0"
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"

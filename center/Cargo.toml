@@ -1,0 +1,19 @@
+[package]
+name = "center"
+version = "0.1.0"
+authors = ["Kaveh Karimi <kaveh.ka@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+bbox = { path = "../bbox" }
+geojson = "0.16.0"
+helpers = { path = "../helpers" }
+serde_json = "1.0.41"
+utils = { path = "../utils" }
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"

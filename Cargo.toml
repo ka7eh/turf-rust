@@ -1,0 +1,9 @@
+[workspace]
+members = [
+  "bbox",
+  "center",
+  "helpers",
+  "meta",
+  "utils",
+  "wasm"
+]
