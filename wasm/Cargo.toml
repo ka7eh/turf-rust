@@ -12,6 +12,7 @@ default = ["console_error_panic_hook"]
 
 [dependencies]
 bbox = { path = "../bbox" }
+center = { path = "../center" }
 helpers = { path = "../helpers" }
 geojson = "0.16.0"
 js-sys = "0.3"

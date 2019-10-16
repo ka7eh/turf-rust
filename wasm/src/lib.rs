@@ -2,6 +2,7 @@
 extern crate serde_derive;
 
 mod bbox;
+mod center;
 mod helpers;
 mod utils;
 

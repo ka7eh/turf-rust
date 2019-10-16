@@ -6,6 +6,12 @@ use std::path::PathBuf;
 use std::io::prelude::*;
 use std::io::BufReader;
 
+pub struct GeoJsonFixture {
+    pub file: String,
+    pub input: GeoJson,
+    pub output: GeoJson
+}
+
 pub fn read_file(file_path: &PathBuf) -> String {
     let file = File::open(file_path).unwrap();
     let mut buff_reader = BufReader::new(file);
@@ -14,7 +20,7 @@ pub fn read_file(file_path: &PathBuf) -> String {
     content
 }
 
-pub fn get_geojsons() -> Vec<(GeoJson, GeoJson)> {
+pub fn get_geojsons() -> Vec<GeoJsonFixture> {
     let cwd = current_dir().unwrap();
     let fixtures_path = cwd.join("src").join("fixtures");
     let in_path = fixtures_path.join("in");
@@ -29,11 +35,16 @@ pub fn get_geojsons() -> Vec<(GeoJson, GeoJson)> {
             let input_content = read_file(&input_path);
             let input_geojson = input_content.parse::<GeoJson>().unwrap();
 
-            let output_path = out_path.join(input_path.file_name().unwrap());
+            let file = input_path.file_name().unwrap();
+            let output_path = out_path.join(file);
             let output_content = read_file(&output_path);
             let output_geojson = output_content.parse::<GeoJson>().unwrap();
 
-            collection.push((input_geojson, output_geojson));
+            collection.push(GeoJsonFixture {
+                file: String::from(file.to_str().unwrap()),
+                input: input_geojson,
+                output: output_geojson
+            });
         }
     }
 

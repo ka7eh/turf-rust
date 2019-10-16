@@ -8,7 +8,10 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [0, 0]
+        "coordinates": [
+          0,
+          0
+        ]
       },
       "properties": {
         "weight": 10
@@ -18,7 +21,10 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [0, 5]
+        "coordinates": [
+          0,
+          5
+        ]
       },
       "properties": {
         "weight": 1
@@ -28,7 +34,10 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [5, 5]
+        "coordinates": [
+          5,
+          5
+        ]
       },
       "properties": {
         "weight": 2
@@ -38,7 +47,10 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [5, 0]
+        "coordinates": [
+          5,
+          0
+        ]
       },
       "properties": {
         "weight": 3

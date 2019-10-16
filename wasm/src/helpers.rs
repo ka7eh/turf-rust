@@ -20,24 +20,24 @@ impl Geometry {
             geometry: match geom_type {
                 "point" => {
                     let coords = js_coords.into_serde().unwrap();
-                    point(coords)
+                    point(coords, None, None)
                 }
                 "line" | "line_string" => {
                     let coords = js_coords.into_serde().unwrap();
-                    line_string(coords)
+                    line_string(coords, None, None)
                 }
                 "multi_line" | "multi_line_string" => {
                     let coords = js_coords.into_serde().unwrap();
-                    multi_line_string(coords)
+                    multi_line_string(coords, None, None)
                 }
                 "polygon" => {
                     console::log_1(&format!("{:?}", js_coords).into());
                     let coords = js_coords.into_serde().unwrap();
-                    polygon(coords)
+                    polygon(coords, None, None)
                 }
                 "multi_polygon" => {
                     let coords = js_coords.into_serde().unwrap();
-                    multi_polygon(coords)
+                    multi_polygon(coords, None, None)
                 }
                 _ => panic!("Unsupported type!"),
             },
