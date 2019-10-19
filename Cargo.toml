@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "bbox",
+  "bbox_polygon",
   "center",
   "helpers",
   "meta",
