@@ -5,6 +5,7 @@ members = [
   "center",
   "helpers",
   "meta",
+  "projection",
   "utils",
   "wasm"
 ]

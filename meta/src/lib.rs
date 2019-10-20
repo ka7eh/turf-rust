@@ -1,36 +1,108 @@
-use geojson::{Geometry, GeoJson, Position, Value};
+use geojson::{GeoJson, Geometry, Position, Value};
 
 fn match_geometry<F>(geometry: &Geometry, f: &F)
-    where F: Fn(&Position) {
-    match geometry.value {
-        Value::Point(ref point) => {
+where
+    F: Fn(&Position),
+{
+    match &geometry.value {
+        Value::Point(point) => {
+            f(&point);
+        }
+        Value::MultiPoint(points) => {
+            for point in points {
+                f(&point);
+            }
+        }
+        Value::LineString(line_string) => {
+            for point in line_string {
+                f(&point);
+            }
+        }
+        Value::MultiLineString(multi_line_string) => {
+            for line in multi_line_string {
+                for point in line {
+                    f(&point);
+                }
+            }
+        }
+        Value::Polygon(polygon) => {
+            for line in polygon {
+                for point in line {
+                    f(&point);
+                }
+            }
+        }
+        Value::MultiPolygon(multi_polygon) => {
+            for polygon in multi_polygon {
+                for line in polygon {
+                    for point in line {
+                        f(&point);
+                    }
+                }
+            }
+        }
+        Value::GeometryCollection(geometry_collection) => {
+            for geometry in geometry_collection {
+                match_geometry(&geometry, f)
+            }
+        }
+    }
+}
+
+pub fn each_coord<F>(geojson: &GeoJson, f: F)
+where
+    F: Fn(&Position),
+{
+    match geojson {
+        GeoJson::FeatureCollection(collection) => {
+            for feature in &collection.features {
+                if let Some(geometry) = &feature.geometry {
+                    match_geometry(&geometry, &f)
+                }
+            }
+        }
+        GeoJson::Feature(feature) => {
+            if let Some(geometry) = &feature.geometry {
+                match_geometry(&geometry, &f)
+            }
+        }
+        GeoJson::Geometry(geometry) => match_geometry(&geometry, &f),
+    }
+}
+
+fn match_mut_geometry<F>(geometry: &mut Geometry, f: &F)
+where
+    F: Fn(&mut Position),
+{
+    match &mut geometry.value {
+        Value::Point(point) => {
             f(point);
         }
-        Value::MultiPoint(ref points) => {
+        Value::MultiPoint(points) => {
             for point in points {
                 f(point);
             }
         }
-        Value::LineString(ref line_string) => {
+        Value::LineString(line_string) => {
             for point in line_string {
                 f(point);
             }
         }
-        Value::MultiLineString(ref multi_line_string) => {
+        Value::MultiLineString(multi_line_string) => {
             for line in multi_line_string {
                 for point in line {
                     f(point);
                 }
             }
         }
-        Value::Polygon(ref polygon) => {
+        Value::Polygon(polygon) => {
             for line in polygon {
                 for point in line {
                     f(point);
                 }
             }
         }
-        Value::MultiPolygon(ref multi_polygon) => {
+        Value::MultiPolygon(multi_polygon) => {
             for polygon in multi_polygon {
                 for line in polygon {
                     for point in line {
@@ -39,36 +111,31 @@ fn match_geometry<F>(geometry: &Geometry, f: &F)
                 }
             }
         }
-        Value::GeometryCollection(ref gc) => {
+        Value::GeometryCollection(gc) => {
             for geometry in gc {
-                match_geometry(geometry, f)
+                match_mut_geometry(geometry, f)
             }
         }
     }
 }
 
-pub fn coord_each<F>(geojson: Option<&GeoJson>, f: F)
-    where F: Fn(&Position) {
+pub fn each_mut_coord<F>(geojson: &mut GeoJson, f: F)
+where
+    F: Fn(&mut Position),
+{
     match geojson {
-        Some(gj) => {
-            match gj {
-                GeoJson::FeatureCollection(ref collection) => {
-                    for feature in &collection.features {
-                        if let Some(ref geometry) = feature.geometry {
-                            match_geometry(geometry, &f)
-                        }
-                    }
-                }
-                GeoJson::Feature(ref feature) => {
-                    if let Some(ref geometry) = feature.geometry {
-                        match_geometry(geometry, &f)
-                    }
-                }
-                GeoJson::Geometry(ref geometry) => {
-                    match_geometry(geometry, &f)
+        GeoJson::FeatureCollection(collection) => {
+            for feature in &mut collection.features {
+                if let Some(geometry) = &mut feature.geometry {
+                    match_mut_geometry(geometry, &f)
                 }
             }
         }
-        None => ()
+        GeoJson::Feature(feature) => {
+            if let Some(geometry) = &mut feature.geometry {
+                match_mut_geometry(geometry, &f)
+            }
+        }
+        GeoJson::Geometry(geometry) => match_mut_geometry(geometry, &f),
     }
 }

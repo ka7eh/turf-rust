@@ -2,7 +2,7 @@ use geojson::{Bbox, GeoJson};
 use std::f64::{INFINITY, NEG_INFINITY};
 use std::sync::{Arc, Mutex};
 
-use meta::coord_each;
+use meta::each_coord;
 
 pub fn bbox(geojson: &GeoJson) -> Bbox {
     let bbox = Arc::new(Mutex::new(vec![
@@ -12,7 +12,7 @@ pub fn bbox(geojson: &GeoJson) -> Bbox {
         NEG_INFINITY,
     ]));
 
-    coord_each(Some(&geojson), |coord| {
+    each_coord(&geojson, |coord| {
         let mut locked_bbox = bbox.lock().unwrap();
         if locked_bbox[0] > coord[0] {
             locked_bbox[0] = coord[0];
