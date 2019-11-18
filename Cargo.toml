@@ -2,6 +2,7 @@
 members = [
   "bbox",
   "bbox_polygon",
+  "buffer",
   "center",
   "helpers",
   "meta",
